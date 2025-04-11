@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace ConsoleApp1
 {
@@ -10,11 +11,14 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            // Display "Hello World!" to the console
-            Console.WriteLine("Hello World!");
+            Console.Write("Enter your name");
+            string Name=Console.ReadLine();
 
-            // Wait for user to press a key before closing
-            Console.ReadKey();
+            Console.Write("Enter your age:");
+            string input = Console.ReadLine();
+            int age=Convert.ToInt32(input);
+
+            Console.WriteLine($"Hello {Name}, you are {age} years old!");
         }
     }
 }
