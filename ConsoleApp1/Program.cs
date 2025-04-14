@@ -1,114 +1,101 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace ConsoleApp1
 {
     class Program
     {
+        static List<string> students = new List<string>();
+
         static void Main(string[] args)
         {
-            // Greeting the user
             Console.Write("Enter your name: ");
-            string name = Console.ReadLine();
+            string user = Console.ReadLine();
 
-            Console.Write("Enter your age: ");
-            string input = Console.ReadLine();
-            int age = Convert.ToInt32(input);
-
-            Console.WriteLine($"\nHello {name}, you are {age} years old!");
-            Console.WriteLine("Welcome to your personal CLI Calculator 🧮\n");
+            Console.WriteLine($"\nHello {user}! 🎓 Welcome to your Student Manager CLI App.\n");
 
             bool running = true;
 
             while (running)
             {
-                Console.WriteLine("\nSelect an operation:");
-                Console.WriteLine("1. Addition (+)");
-                Console.WriteLine("2. Subtraction (-)");
-                Console.WriteLine("3. Multiplication (*)");
-                Console.WriteLine("4. Division (/)");
-                Console.WriteLine("5. Modulus (%)");
-                Console.WriteLine("6. Exit");
-                Console.Write("Enter your choice (1-6): ");
+                Console.WriteLine("\n--- MENU ---");
+                Console.WriteLine("1. Add Student");
+                Console.WriteLine("2. Remove Student");
+                Console.WriteLine("3. Show All Students");
+                Console.WriteLine("4. Exit");
+                Console.Write("Enter your choice (1-4): ");
 
                 string choice = Console.ReadLine();
-
-                if (choice == "6")
-                {
-                    Console.WriteLine("Goodbye! Thanks for using the calculator, " + name + "!");
-                    break;
-                }
-
-                Console.Write("Enter first number: ");
-                double num1 = GetValidNumber();
-
-                Console.Write("Enter second number: ");
-                double num2 = GetValidNumber();
-
-                double result = 0;
-                bool valid = true;
 
                 switch (choice)
                 {
                     case "1":
-                        result = num1 + num2;
-                        Console.WriteLine($"Result: {num1} + {num2} = {result}");
+                        AddStudent();
                         break;
                     case "2":
-                        result = num1 - num2;
-                        Console.WriteLine($"Result: {num1} - {num2} = {result}");
+                        RemoveStudent();
                         break;
                     case "3":
-                        result = num1 * num2;
-                        Console.WriteLine($"Result: {num1} * {num2} = {result}");
+                        ShowStudents();
                         break;
                     case "4":
-                        if (num2 != 0)
-                        {
-                            result = num1 / num2;
-                            Console.WriteLine($"Result: {num1} / {num2} = {result}");
-                        }
-                        else
-                        {
-                            Console.WriteLine("⚠️ Error: Cannot divide by zero.");
-                            valid = false;
-                        }
-                        break;
-                    case "5":
-                        result = num1 % num2;
-                        Console.WriteLine($"Result: {num1} % {num2} = {result}");
+                        Console.WriteLine($"\nThanks for using the Student Manager, {user}! 👋");
+                        running = false;
                         break;
                     default:
-                        Console.WriteLine("Invalid choice! Please select a number between 1 and 6.");
-                        valid = false;
+                        Console.WriteLine("⚠️ Invalid choice. Please pick between 1 and 4.");
                         break;
-                }
-
-                if (valid)
-                {
-                    Console.Write("\nWould you like to do another operation? (y/n): ");
-                    string again = Console.ReadLine().ToLower();
-                    if (again != "y")
-                    {
-                        running = false;
-                        Console.WriteLine($"See you soon, {name}! 👋");
-                    }
                 }
             }
         }
 
-        static double GetValidNumber()
+        static void AddStudent()
         {
-            double num;
-            while (!double.TryParse(Console.ReadLine(), out num))
+            Console.Write("Enter student name to add: ");
+            string name = Console.ReadLine();
+
+            if (!string.IsNullOrWhiteSpace(name))
             {
-                Console.Write("Invalid input. Please enter a valid number: ");
+                students.Add(name.Trim());
+                Console.WriteLine($"✅ {name} has been added.");
             }
-            return num;
+            else
+            {
+                Console.WriteLine("❌ Name cannot be empty.");
+            }
+        }
+
+        static void RemoveStudent()
+        {
+            Console.Write("Enter student name to remove: ");
+            string name = Console.ReadLine();
+
+            if (students.Remove(name))
+            {
+                Console.WriteLine($"🗑️ {name} has been removed.");
+            }
+            else
+            {
+                Console.WriteLine($"❌ {name} not found in the list.");
+            }
+        }
+
+        static void ShowStudents()
+        {
+            Console.WriteLine("\n--- Current Student List ---");
+
+            if (students.Count == 0)
+            {
+                Console.WriteLine("📭 No students added yet.");
+            }
+            else
+            {
+                int index = 1;
+                foreach (string student in students)
+                {
+                    Console.WriteLine($"{index++}. {student}");
+                }
+            }
         }
     }
 }
