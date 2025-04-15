@@ -1,101 +1,50 @@
 using System;
-using System.Collections.Generic;
 
-namespace ConsoleApp1
+class DivisionApp
 {
-    class Program
+    static void Main()
     {
-        static List<string> students = new List<string>();
+        Console.WriteLine("=== Welcome to the Division App ===");
 
-        static void Main(string[] args)
+        int numerator = GetNumber("Enter the numerator: ");
+        int denominator = GetNumber("Enter the denominator: ");
+
+        PerformDivision(numerator, denominator);
+
+        Console.WriteLine("Thanks for using the app. Have a great day!");
+    }
+
+    static int GetNumber(string prompt)
+    {
+        int number;
+        while (true)
         {
-            Console.Write("Enter your name: ");
-            string user = Console.ReadLine();
+            Console.Write(prompt);
+            string input = Console.ReadLine();
 
-            Console.WriteLine($"\nHello {user}! 🎓 Welcome to your Student Manager CLI App.\n");
+            if (int.TryParse(input, out number))
+                return number;
 
-            bool running = true;
-
-            while (running)
-            {
-                Console.WriteLine("\n--- MENU ---");
-                Console.WriteLine("1. Add Student");
-                Console.WriteLine("2. Remove Student");
-                Console.WriteLine("3. Show All Students");
-                Console.WriteLine("4. Exit");
-                Console.Write("Enter your choice (1-4): ");
-
-                string choice = Console.ReadLine();
-
-                switch (choice)
-                {
-                    case "1":
-                        AddStudent();
-                        break;
-                    case "2":
-                        RemoveStudent();
-                        break;
-                    case "3":
-                        ShowStudents();
-                        break;
-                    case "4":
-                        Console.WriteLine($"\nThanks for using the Student Manager, {user}! 👋");
-                        running = false;
-                        break;
-                    default:
-                        Console.WriteLine("⚠️ Invalid choice. Please pick between 1 and 4.");
-                        break;
-                }
-            }
+            Console.WriteLine("❌ Invalid input. Please enter a valid number.");
         }
+    }
 
-        static void AddStudent()
+    static void PerformDivision(int num, int denom)
+    {
+        try
         {
-            Console.Write("Enter student name to add: ");
-            string name = Console.ReadLine();
-
-            if (!string.IsNullOrWhiteSpace(name))
-            {
-                students.Add(name.Trim());
-                Console.WriteLine($"✅ {name} has been added.");
-            }
-            else
-            {
-                Console.WriteLine("❌ Name cannot be empty.");
-            }
+            double result = Divide(num, denom);
+            Console.WriteLine($"✅ Result: {num} / {denom} = {result}");
         }
-
-        static void RemoveStudent()
+        catch (DivideByZeroException)
         {
-            Console.Write("Enter student name to remove: ");
-            string name = Console.ReadLine();
-
-            if (students.Remove(name))
-            {
-                Console.WriteLine($"🗑️ {name} has been removed.");
-            }
-            else
-            {
-                Console.WriteLine($"❌ {name} not found in the list.");
-            }
+            Console.WriteLine("⚠️ Error: Cannot divide by zero.");
         }
+    }
 
-        static void ShowStudents()
-        {
-            Console.WriteLine("\n--- Current Student List ---");
-
-            if (students.Count == 0)
-            {
-                Console.WriteLine("📭 No students added yet.");
-            }
-            else
-            {
-                int index = 1;
-                foreach (string student in students)
-                {
-                    Console.WriteLine($"{index++}. {student}");
-                }
-            }
-        }
+    static double Divide(int a, int b)
+    {
+        // Throws automatically if b == 0
+        return (double)a / b;
     }
 }
