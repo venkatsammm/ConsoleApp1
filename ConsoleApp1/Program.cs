@@ -1,50 +1,70 @@
 using System;
 
-class DivisionApp
+namespace OOPMiniProject
 {
-    static void Main()
+    // Base class
+    public class Product
     {
-        Console.WriteLine("=== Welcome to the Division App ===");
+        public string Name { get; set; }
+        public double Price { get; set; }
+        public string Brand { get; set; }
 
-        int numerator = GetNumber("Enter the numerator: ");
-        int denominator = GetNumber("Enter the denominator: ");
-
-        PerformDivision(numerator, denominator);
-
-        Console.WriteLine("Thanks for using the app. Have a great day!");
-    }
-
-    static int GetNumber(string prompt)
-    {
-        int number;
-        while (true)
+        public Product(string name, double price, string brand)
         {
-            Console.Write(prompt);
-            string input = Console.ReadLine();
+            Name = name;
+            Price = price;
+            Brand = brand;
+        }
 
-            if (int.TryParse(input, out number))
-                return number;
-
-            Console.WriteLine("❌ Invalid input. Please enter a valid number.");
+        public virtual void DisplayInfo()
+        {
+            Console.WriteLine($"Product Name : {Name}");
+            Console.WriteLine($"Price        : ${Price}");
+            Console.WriteLine($"Brand        : {Brand}");
         }
     }
 
-    static void PerformDivision(int num, int denom)
+    // Derived class
+    public class Book : Product
     {
-        try
+        public string Author { get; set; }
+        public int Pages { get; set; }
+        public string Genre { get; set; }
+
+        public Book(string name, double price, string brand, string author, int pages, string genre)
+            : base(name, price, brand)
         {
-            double result = Divide(num, denom);
-            Console.WriteLine($"✅ Result: {num} / {denom} = {result}");
+            Author = author;
+            Pages = pages;
+            Genre = genre;
         }
-        catch (DivideByZeroException)
+
+        // Method overriding
+        public override void DisplayInfo()
         {
-            Console.WriteLine("⚠️ Error: Cannot divide by zero.");
+            base.DisplayInfo();
+            Console.WriteLine($"Author       : {Author}");
+            Console.WriteLine($"Pages        : {Pages}");
+            Console.WriteLine($"Genre        : {Genre}");
         }
     }
 
-    static double Divide(int a, int b)
+    // Program entry point
+    class Program
     {
-        // Throws automatically if b == 0
-        return (double)a / b;
+        static void Main(string[] args)
+        {
+            Book myBook = new Book(
+                "The C# Chronicles",
+                39.99,
+                "CodeVerse",
+                "Venkat V",
+                450,
+                "Programming"
+            );
+
+            Console.WriteLine("📚 Book Details:\n");
+            myBook.DisplayInfo();
+        }
     }
 }
